@@ -1,0 +1,29 @@
+{% extends 'stu_home.html' %}
+{% block content %}
+<form class='form-inline' action="search" method="POST" enctype="multipart/form-data>" style="margin-left: 16px;width:70%;" data-aos="fade-left">
+  {% csrf_token %}
+  <input type="search" name="srh" class="form-control mr-sm-2" placeholder="search" aria-label="search" style="width: 80%;border:1px solid cyan;">
+  <input class='btn btn-light my-sm-0' type="submit" value="search" style="width: 17%;background-color:cyan;">
+</form><br><br>
+{% for i in name %}
+{% ifequal i.username_id user.id %}
+<div class="w3-container" data-aos="fade-left">
+    <div class="w3-card-4" style="width:70%">
+      <header class="w3-container w3-light-blue" data-aos="zoom-in">
+        <h3>{{i.title}}</h3>{{i.artdata}}<i class="fa fa-eye" style="font-size:20px;margin-left:70%;"></i>&nbsp;{{i.view}}&nbsp;&nbsp;&nbsp;<i class="fa fa-thumbs-up" style="font-size:20px"></i>&nbsp;{{i.likes}}&nbsp;&nbsp;&nbsp;<i class="fa fa-thumbs-down" style="font-size:20px"></i>&nbsp;{{i.dislikes}}
+      </header>
+      <div class="w3-container" data-aos="fade-left">
+        <p>discription :</p>
+        <hr>
+        <p>{{i.discription}}</p><br>
+      </div>
+      {% for k in data %}
+              {% ifequal k.id i.username_id %}
+                   <a class="w3-button w3-block w3-dark-grey" href="{% url 'articleview' id=i.id %}">view post</a>
+              {% endifequal %}
+      {% endfor %}
+    </div>
+  </div><br>
+  {% endifequal %}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% block content %}
+<style>
+    .video-fluid {
+        width: 100%;
+        height: auto;
+      }
+      .left{
+          float: left;
+          width: 49%;
+      }
+      .right{
+        float: left;
+        width: 49%;
+    }
+    .w3-button{
+        text-decoration: none;
+    }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<div class="w3-container">
+      <div class="w3-card-4" style="width:70%">
+             <header class="w3-container w3-light-blue">
+                 <h3>{{que.question}}</h3>{{que.quedata}}
+             </header>
+             <a class="w3-button w3-block w3-dark-grey" href="{% url 'questiondelete' id=que.id %}">delete question</a>
+      </div>
+</div><br><br>
+{% for i in ans %}
+{% ifequal i.question_id que.id %}
+<div class="w3-container">
+    <div class="w3-card-4" style="width:70%">
+      <header class="w3-container w3-light-green">
+        <h3>{{i.ansdata}}</h3>
+      </header>
+        {% for k in name %}
+            {% ifequal k.id i.username_id %}
+      <div class="w3-container">
+        <p>posted by :<a href="{% url 'seeprofile' id=i.username %}">{{ k.username }}</a>&nbsp;&nbsp;&nbsp;{{j.ansdata}}</p>
+        <hr>
+        <img src='{{k.profile.photo.url }}' alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        {% endifequal %}
+        {% endfor %}
+        <p>{{i.answer}}</p><br>
+      </div>
+      <div>
+        {% if i.photo %}
+        <div class="left"><img src="{{ i.photo.url }}" class="w3-round" style="width:100%;"></div>
+            {% endif %}
+             {% if i.video %}
+      <div class="right"><video  class="video-fluid z-depth-1" autoplay loop controls muted ><source src="{{ i.video.url }}" type="video/mp4"></video></div>
+             {% endif %}
+             {% if i.pdf %}
+       <a href="{{ i.pdf.url }}" >Download PDF</a>
+            {% endif %}
+    </div>
+    <a class="w3-button w3-block w3-dark-grey"></a>
+    </div>
+    <br><br>
+  </div><br>
+  {% endifequal %}
+  {% endfor %}
+{% endblock %}

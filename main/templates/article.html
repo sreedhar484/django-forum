@@ -1,0 +1,30 @@
+{% extends 'stu_home.html' %}
+{% block content %}
+<form class='form-inline' action="article" method="POST" enctype="multipart/form-data>" style="margin-left:16px;width:70%;" data-aos="fade-left">
+  {% csrf_token %}
+  <input type="search" name="srh" class="form-control mr-sm-2" placeholder="search in {{count}} articles" aria-label="search" style="width: 80%;border:1px solid cyan;" value='{{question}}' required>
+  <input class='btn btn-light my-sm-0' type="submit" value="search" style="width: 17%;background-color:cyan;">
+</form><br><br>
+<p data-aos="fade-left" style="marginleft:16px;width:70%;">{{str1}}</p>
+{% for i in name %}
+<div class="w3-container" data-aos="fade-left">
+    <div class="w3-card-4" style="width:70%;">
+      <header class="w3-container w3-light-blue" data-aos="zoom-in">
+        <h3>{{i.title}}</h3>{{i.artdata}}<i class="fa fa-eye" style="font-size:20px;margin-left:70%;"></i>&nbsp;{{i.view}}&nbsp;&nbsp;&nbsp;<i class="fa fa-thumbs-up" style="font-size:20px"></i>&nbsp;{{i.likes}}&nbsp;&nbsp;&nbsp;<i class="fa fa-thumbs-down" style="font-size:20px"></i>&nbsp;{{i.dislikes}}
+      </header>
+      <div class="w3-container" data-aos="fade-left">
+        <br><br>
+        <p>posted by :<a href="{% url 'seeprofile' id=i.username %}">{{ i.username }}</a></p>
+        <hr>
+        {% for j in data %}
+        {% ifequal j.id i.username_id %}
+        <img src='{{j.profile.photo.url }}' alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        {% endifequal %}
+        {% endfor %}
+        <p>{{i.discription}}</p><br>
+      </div>
+      <a class="w3-button w3-block w3-dark-grey" href="{% url 'allarticleview' id=i.id %}">view post</a>
+    </div>
+  </div><br>
+  {% endfor %}
+{% endblock %}

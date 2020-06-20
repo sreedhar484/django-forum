@@ -1,0 +1,131 @@
+{% load static %}
+<style>
+  p{
+    float: right;
+    border: 5px solid #004853;
+    display:inline;
+    padding: 5px;
+    color: #004853;
+    font-family: Verdana, sans-serif, Arial;
+    font-size: 40px;
+    font-weight: bold;
+    text-decoration: none;
+}
+header{
+  height: auto;
+  background-color: cornsilk;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
+<script>
+  var score=0;
+  setTimeout(fun,600000);
+  function fun(){
+    var form=document.getElementById('form1');
+    document.getElementById('field').value=score;
+    form.submit();
+  }
+  function submitAnswers(answers){
+    var total = answers.length;
+    var choice = []
+
+    for(var i = 1; i <= total; i++){
+      choice[i] = document.forms["quizForm"]["q"+i].value;
+    }
+    for(i = 1; i <= total; i++){
+      if(choice[i] == answers[i - 1]){
+        score++;
+      }
+    }
+    var form=document.getElementById('form1');
+    document.getElementById('field').value=score;
+    form.submit();
+    return false;
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://unpkg.com/aos@2.3.0/dist/aos.css'>
+<meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src='https://unpkg.com/aos@2.3.0/dist/aos.js'></script>
+<header>
+  <nav class="navbar navbar-light bg-secondary justify-content-between" data-aos="fade-right">
+    <h2 class="navbar-brand">CSE Quiz</h2>
+  <ul class="nav navbar-brand navbar-center">
+      <li><h2>{{sub}}</h2></li>
+  </ul>
+    <form class="form-inline">
+      Time Remaining : &nbsp;<p class="btn btn-outline-success my-2 my-sm-0"  id="ten-countdown"></p>
+    </form>
+  </nav><br>
+  <form name = "quizForm" onsubmit = "return submitAnswers(answers = [{% for i in quiz %}'{{ i.answer }}',{% endfor %}])" style="width: 80%;margin:auto">
+  {% csrf_token %}
+  {% for i in quiz %}
+<div class="w3-container" data-aos="fade-right">
+    <div class="w3-card-4" style="width:100%" data-aos="zoom-in">
+      <header class="w3-container w3-light-green" data-aos="zoom-in">
+        <h3>{{forloop.counter}}.{{i.question}}</h3>
+      </header>
+      <div class="w3-container w3-light-blue">
+        <hr>
+         <div class="options" data-aos="fade-right">
+             a <input type="radio" id="q1a" name='q{{forloop.counter}}' value="a"><label for="op1">{{i.option1}}</label><br>
+             b <input type="radio" id="q1b" name='q{{forloop.counter}}' value="b"><label for="op2">{{i.option2}}</label><br>
+             c <input type="radio" id="q1c" name='q{{forloop.counter}}' value="c"><label for="op3">{{i.option3}}</label><br>
+             d <input type="radio" id='q1d' name='q{{forloop.counter}}' value="d"><label for="op4">{{i.option4}}</label><br>
+         </div>
+      </div>
+      <b class="w3-button w3-block w3-dark-grey"></b>
+    </div>
+  </div><br>
+  {% endfor %}
+  <input type="submit" value="submit" class="w3-button w3-black w3-round" style="margin-left: 17px;">
+</form>
+<div>
+  <form action="quizform" method="POST" enctype="multipart/form-data" id="form1">
+    {% csrf_token %}
+    <input type="hidden" id="field" name="score">
+    <input type="hidden" value={{sub}} name="subject">
+    <input type="hidden" value={{count}} name="count">
+  </form>
+</div>
+</header>
+<script>
+  AOS.init({duration:1200,})
+</script>
+<script>
+  function countdown( elementName, minutes, seconds )
+{
+    var element, endTime, hours, mins, msLeft, time;
+
+    function twoDigits( n )
+    {
+        return (n <= 9 ? "0" + n : n);
+    }
+
+    function updateTimer()
+    {
+        msLeft = endTime - (+new Date);
+        if ( msLeft < 1000 ) {
+            element.innerHTML = "Time is up!";
+        } else {
+            time = new Date( msLeft );
+            hours = time.getUTCHours();
+            mins = time.getUTCMinutes();
+            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+        }
+    }
+
+    element = document.getElementById( elementName );
+    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+    updateTimer();
+}
+
+countdown( "ten-countdown", 10, 0 );
+</script>

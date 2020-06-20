@@ -1,0 +1,37 @@
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<style>
+    .asteriskField{
+      display: none;
+    }
+    #hint_id_username{
+        display: none;
+    }
+    #hint_id_password1{
+      display: none;
+  }
+  #hint_id_password2{
+      display: none;
+  }
+  .man{
+    height: 100vh;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <div class="man">
+  <h1 align="center">Post Answer</h1>
+  <h3 align='center'>Q:{{que.question}}</h3>
+<form method="post" enctype="multipart/form-data" style="width: 500px; margin:auto;">
+    {% csrf_token %}
+    {{form|crispy}}
+    <input type="submit" value="post answer" class="btn btn-primary">
+</form>
+</div>
+{% endblock %}

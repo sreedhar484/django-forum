@@ -1,0 +1,55 @@
+
+{% block content %}
+<style>
+    .first{
+        margin-top: 30px;
+    }
+.video-fluid {
+    width: 100%;
+    height: auto;
+  }
+  .left{
+      float: left;
+      width: 49%;
+  }
+  .right{
+    float: left;
+    width: 49%;
+}
+.w3-button{
+    text-decoration: none;
+}
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% for i in data %}
+{% ifequal i.id name.id %}
+<div class="first">
+<div class="w3-container">
+    <div class="w3-card-4" style="width:70%">
+      <header class="w3-container w3-light-green">
+        <h3>{{i.title}}</h3>{{i.artdata}}
+      </header>
+      <div class="w3-container">
+        <p>discription :</p>
+        <hr>
+        <p>{{i.discription}}</p><br>
+      </div>
+      <div>
+        {% if i.photo %}
+        <div class="left"><img src="{{ i.photo.url }}" class="w3-round" style="width:100%;height:auto;"></div>
+            {% endif %}
+             {% if i.video %}
+      <div class="right"><video  class="video-fluid z-depth-1" autoplay loop controls muted ><source src="{{ i.video.url }}" type="video/mp4"></video></div>
+             {% endif %}
+             {% if i.pdf %}
+            <a href="{{ j.pdf.url }}" >Download PDF</a>
+            {% endif %}
+    </div>
+                   <a class="w3-button w3-block w3-dark-grey"></a>
+    </div>
+  </div><br>
+  </div>
+  {% endifequal %}
+  {% endfor %}
+{% endblock %}

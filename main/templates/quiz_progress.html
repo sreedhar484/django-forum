@@ -1,0 +1,174 @@
+{% extends 'stu_home.html' %}
+{% block content %}
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="w3-container" data-aos="fade-left">
+    <div class="w3-card-4" style="width:70%">
+      <header class="w3-container w3-light-blue" data-aos="zoom-in">
+        <h3>{{user.first_name}} {{user.last_name}}</h3>
+      </header>
+      <div class="w3-container" data-aos="fade-left">
+        <p></p>
+        <hr>
+        <table class="w3-table w3-bordered" data-aos="fade-left">
+          <tr>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Date</th>
+            <th>Review</th>
+          </tr>
+            {% for i in res %}
+                     {% ifequal i.username_id user.id %}
+                     <tr>
+                      <td>{{i.subject}}</td>
+                      <td>{{i.score}}/{{i.total}}</td>
+                      <td>{{i.quizdate}}</td>
+                      <td><a href="#">review</a></td>
+                    </tr>
+                     {% endifequal %}
+            {% endfor %}
+        </table>
+      </div>
+      <p class="w3-button w3-block w3-dark-grey"></p>
+    </div>
+  </div><br>
+  <form name="scoreform" style="width: 500px;margin:auto">
+    {% for i in data %}
+    <input type="hidden" name="sub{{forloop.counter}}" value={{i}}>
+    {% endfor %}
+    <input class='btn btn-primary' type="submit" value="show graph by last results" onmouseover='displaygraph()'>
+  </form>
+  <br>
+  <form name="scoreform1" style="width: 500px;margin:auto">
+    {% for i in data1 %}
+    <input type="hidden" name="sub{{forloop.counter}}" value={{i}}>
+    {% endfor %}
+    <input class='btn btn-primary' type="submit" value="show graph by top results" onmouseover='displaygraph1()'>
+  </form>
+  <div class="container">
+    <canvas id="myChart"></canvas>
+  </div>
+  <script>
+    function displaygraph(){
+    var score =[];
+    for(var i=1;i<=6;i++){
+      score[i]=document.forms['scoreform']['sub'+i].value;
+    }
+    let myChart = document.getElementById('myChart').getContext('2d');
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = '#777';
+    let massPopChart = new Chart(myChart, {
+      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+      data:{
+        labels:['General', 'Python', 'Java', 'C Programming', 'HTML', 'Javascript'],
+        datasets:[{
+          label:'scores',
+          data:[score[1],score[2],score[3],score[4],score[5],score[6]],
+          //backgroundColor:'green',
+          backgroundColor:[
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(255, 99, 132, 0.6)'
+          ],
+          borderWidth:1,
+          borderColor:'#777',
+          hoverBorderWidth:3,
+          hoverBorderColor:'#000'
+        }]
+      },
+      options:{
+        title:{
+          display:true,
+          text:'Subject wise score',
+          fontSize:20
+        },
+        legend:{
+          display:false,
+          position:'right',
+          labels:{
+            fontColor:'#000'
+          }
+        },
+        layout:{
+          padding:{
+            left:5,
+            right:0,
+            bottom:0,
+            top:0
+          }
+        },
+        tooltips:{
+          enabled:true
+        }
+      }
+    });
+  }
+  function displaygraph1(){
+    var score =[];
+    for(var i=1;i<=6;i++){
+      score[i]=document.forms['scoreform1']['sub'+i].value;
+    }
+    let myChart = document.getElementById('myChart').getContext('2d');
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = '#777';
+    let massPopChart = new Chart(myChart, {
+      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+      data:{
+        labels:['General', 'Python', 'Java', 'C Programming', 'HTML', 'Javascript'],
+        datasets:[{
+          label:'scores',
+          data:[score[1],score[2],score[3],score[4],score[5],score[6]],
+          //backgroundColor:'green',
+          backgroundColor:[
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(255, 99, 132, 0.6)'
+          ],
+          borderWidth:1,
+          borderColor:'#777',
+          hoverBorderWidth:3,
+          hoverBorderColor:'#000'
+        }]
+      },
+      options:{
+        title:{
+          display:true,
+          text:'Subject wise score',
+          fontSize:20
+        },
+        legend:{
+          display:false,
+          position:'right',
+          labels:{
+            fontColor:'#000'
+          }
+        },
+        layout:{
+          padding:{
+            left:5,
+            right:0,
+            bottom:0,
+            top:0
+          }
+        },
+        tooltips:{
+          enabled:true
+        }
+      }
+    });
+  }
+  </script>
+{% endblock %}

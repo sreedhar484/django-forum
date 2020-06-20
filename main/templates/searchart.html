@@ -1,0 +1,25 @@
+{% extends 'stu_home.html' %}
+{% block content %}
+{% for i in data %}
+<div class="w3-container">
+    <div class="w3-card-4" style="width:70%">
+      <header class="w3-container w3-light-blue">
+        <h3><a href="{% url 'allarticleview' id=i.id %}">{{i.title}}</a></h3>{{i.artdata}}
+      </header>
+        {% for k in name %}
+            {% ifequal k.id i.username_id %}
+      <div class="w3-container">
+        <br><br>
+        <p>posted by :<a href="{% url 'seeprofile' id=i.username %}">{{ k.username }}</a></p>
+        <hr>
+        <img src='{{k.profile.photo.url }}' alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        {% endifequal %}
+        {% endfor %}
+        <p>{{i.discription}}</p><br>
+      </div>
+    <a class="w3-button w3-block w3-dark-grey"></a>
+    </div>
+    <br><br>
+  </div><br>
+  {% endfor %}
+  {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'stu_home.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<body>
+<h1 align="center">POST QUESTION</h1>
+<form method="post" enctype="multipart/form-data" style="width: 500px;margin:auto;">
+  {% for i in messages %}
+  <div class="alert alert-block alert-info">
+      {{i}}
+  </div>
+  {% endfor %}
+    {% csrf_token %}
+    {{form|crispy}}
+    <input type="submit" value="post question" class="btn btn-primary">
+</form>
+{% endblock %}
